@@ -12,7 +12,7 @@ import { checkName } from './middleware/checkName.middleware';
 // => functional middleware
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(checkName).forRoutes("app");
+    consumer.apply(checkName).forRoutes("app/name");
   }
 }
 

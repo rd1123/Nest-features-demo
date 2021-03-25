@@ -1,7 +1,7 @@
-import { CheckMiddlewareMiddleware } from './check-middleware.middleware';
+import { CheckMiddleware } from './check-middleware.middleware';
 
-describe('CheckMiddlewareMiddleware', () => {
+describe('CheckMiddleware', () => {
   it('should be defined', () => {
-    expect(new CheckMiddlewareMiddleware()).toBeDefined();
+    expect(new CheckMiddleware).toBeDefined();
   });
 });

@@ -1,11 +1,13 @@
-import { Body, Controller, DefaultValuePipe, Get, HttpException, HttpStatus, ParseIntPipe, Param, Post, Query, Res, UseFilters, UsePipes } from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Get, HttpException, HttpStatus, ParseIntPipe, Param, Post, Query, Res, UseFilters, UsePipes, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AppService } from './app.service';
 import { CreateDto } from './dto/create-joi-validatioin.dto';
 import { HttpExceptionFilter } from './exception/filter/http-exception.filter';
+import { AuthGuard } from './guard/auth-guard.guard';
 import { ParseBooleanPipe } from './pipe/parseBoolPipe.pipt';
 import { ParseIntNPipe } from "./pipe/parseIntPipe.pipe";
 import { ValidationPipe } from './pipe/validation.pipe';
+import { Roles } from './role.decorator';
 
 @Controller("app")
 export class AppController {
@@ -30,7 +32,7 @@ export class AppController {
     return `This is correct name => ${name["name"]}`;
   };
 
-  @Get(":id")
+  @Get("/parseIntFunction/:id")
   parseIntFunction(
     @Param("id", ParseIntNPipe) id: number
   ): string {
@@ -77,5 +79,12 @@ export class AppController {
       id: id,
       isHuman: isHuman
     }
+  }
+
+  @Get("/auth")
+  @Roles("admin")
+  @UseGuards(AuthGuard)
+  async authRoute(): Promise<string> {
+    return `Pass auth result`
   }
 }

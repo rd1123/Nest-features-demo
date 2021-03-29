@@ -1,9 +1,10 @@
-import { Body, Controller, DefaultValuePipe, Get, HttpException, HttpStatus, ParseIntPipe, Param, Post, Query, Res, UseFilters, UsePipes, UseGuards } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, DefaultValuePipe, Get, HttpException, HttpStatus, ParseIntPipe, Param, Post, Query, Res, UseFilters, UsePipes, UseGuards, UseInterceptors } from '@nestjs/common';
+import { query, Response } from 'express';
 import { AppService } from './app.service';
 import { CreateDto } from './dto/create-joi-validatioin.dto';
 import { HttpExceptionFilter } from './exception/filter/http-exception.filter';
 import { AuthGuard } from './guard/auth-guard.guard';
+import { transformInterceptor } from './interceptor/transform.interceptor';
 import { ParseBooleanPipe } from './pipe/parseBoolPipe.pipt';
 import { ParseIntNPipe } from "./pipe/parseIntPipe.pipe";
 import { ValidationPipe } from './pipe/validation.pipe';
@@ -86,5 +87,14 @@ export class AppController {
   @UseGuards(AuthGuard)
   async authRoute(): Promise<string> {
     return `Pass auth result`
+  }
+
+  @Get("/interceptor")
+  @UseInterceptors(transformInterceptor)
+  getAll(
+    @Res() response: Response,
+    @Query() query
+  ) {
+    return response.status(HttpStatus.OK).json({ message: "success" });
   }
 }

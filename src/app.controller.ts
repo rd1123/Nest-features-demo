@@ -1,7 +1,10 @@
 import { Body, Controller, DefaultValuePipe, Get, HttpException, HttpStatus, ParseIntPipe, Param, Post, Query, Res, UseFilters, UsePipes, UseGuards, UseInterceptors } from '@nestjs/common';
 import { query, Response } from 'express';
 import { AppService } from './app.service';
+import { User } from './decorator/get-user.decorator';
 import { CreateDto } from './dto/create-joi-validatioin.dto';
+import { UserDto } from './dto/user-intomation.dto';
+import { UserEntity } from './entity/user.entity';
 import { HttpExceptionFilter } from './exception/filter/http-exception.filter';
 import { AuthGuard } from './guard/auth-guard.guard';
 import { transformInterceptor } from './interceptor/transform.interceptor';
@@ -96,5 +99,14 @@ export class AppController {
     @Query() query
   ) {
     return response.status(HttpStatus.OK).json({ message: "success" });
+  }
+
+  // => customize decorator
+  @Get("/getInfo")
+  async getUser(
+    @User(["firstName", "lastName"]) user: UserEntity,
+    @Res() response: Response
+  ) {
+    return response.status(HttpStatus.OK).send(user);
   }
 }

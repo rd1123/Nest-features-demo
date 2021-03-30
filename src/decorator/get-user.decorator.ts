@@ -9,7 +9,7 @@ export const User = createParamDecorator((data: string[], req: ExecutionContext)
         ...newUser,
         [prop]: user[prop]
       }
-    }, {});
+    }, {}); // 此地方的{}是預設值，因為return是一個object所以必須給他一個
   }
 
   return user;
